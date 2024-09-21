@@ -3,9 +3,10 @@ const apiUrl = "https://geocoding-api.open-meteo.com/v1/search?name=Sorel&count=
 const api = {
   get: async () => {
     try {
-      const response = await fetch(apiUrl, {
-        method: 'GET'
-      });
+      const response = await fetch(apiUrl, { method: 'GET' });
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
       const data = await response.json();
       return data;
     } catch (error) {

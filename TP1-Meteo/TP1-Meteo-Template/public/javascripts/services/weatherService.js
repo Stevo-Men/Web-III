@@ -1,29 +1,25 @@
-
 export default class WeatherService {
-
-
 
     async searchWeather(query) {
         const cacheKey = `searchWeather_${query}`;
         const cachedItem = getItem(cacheKey);
-        if (cacheKey) {
+
+        if (cachedItem) { // Fix here: check for cached data, not cacheKey
             return cachedItem;
         }
 
         const url = `https://geocoding-api.open-meteo.com/v1/search?query=${query}`;
-        console.log(`API`)
+        console.log(`API`);
 
         const response = await fetch(url);
         if (!response.ok) {
-         throw new Error("API Error")
+            throw new Error("API Error");
         }
-    
-    
+
         const json = await response.json();
-        setItem(cacheKey, json.result, 60_000)
+        setItem(cacheKey, json.result, 60_000); // Caching for 60 seconds
         return json.result;
     }
-    
 }
 
 function setItem(key, value, ttl) {
@@ -49,5 +45,3 @@ function getItem(key) {
 
     return item.value;
 }
-
-const value = localStorage.getItem("key");

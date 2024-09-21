@@ -19,6 +19,7 @@
     <link href="public/stylesheets/wrappers.css" rel="stylesheet">
     <script src="./public/javascripts/app.js" defer></script>
     <script src="./public/javascripts/data/APIGetter.js" defer></script>
+    <script src="./public/javascripts/templates/WeatherFact.js" defer></script>
 </head>
 <body>
     <main class="text-center wrapper-md">
@@ -66,305 +67,309 @@
                     <div class="accordion-item">
 
                         <!-- Entête d'une ville -->
-                        <header class="accordion-header wrap-words">
-                            <button class="accordion-button collapsed" data-bs-toggle="collapse"
-                                data-bs-target="[data-collapse-2974198]">
-                                <div class="d-flex flex-column">
-                                    <h2 class="fs-5 fw-bold">
-                                        <i class="fa-solid fa-location-dot me-2 text-primary"></i>Sorel
-                                    </h2>
-                                    <h3 class="fs-6 country">
-                                        France
-                                    </h3>
-                                </div>
-                            </button>
-                        </header>
+                        <div id="resultsContainer">
+                            <header class="accordion-header wrap-words">
+                                <button class="accordion-button collapsed" data-bs-toggle="collapse"
+                                    data-bs-target="[data-collapse-2974198]">
+                                    <div class="d-flex flex-column">
+                                        <h2 class="fs-5 fw-bold">
+                                            <i class="fa-solid fa-location-dot me-2 text-primary"></i>Sorel
+                                        </h2>
+                                        <h3 class="fs-6 country">
+                                            France
+                                        </h3>
+                                    </div>
+                                </button>
+                            </header>
+                        </div>
 
                         <!-- Détail d'une ville, le data-collapse doit être unique, prendre un ID de la réponse de l'API -->
-                        <div data-collapse-2974198="" class="accordion-collapse collapse"
-                            data-bs-parent="[data-accordion]">
-                            <div class="weather accordion-body text-start">
-                                <div>
+                        <div id="resultsContainer">
+                            <div data-collapse-2974198="" class="accordion-collapse collapse"
+                                data-bs-parent="[data-accordion]">
+                                <div class="weather accordion-body text-start">
                                     <div>
-                                        <h4 class="text-white fs-6 fw-bold">Current local date and time</h4>
                                         <div>
-                                            Friday
-                                            27
-                                            October
-                                            2023
-                                            03:09
-                                            AM
+                                            <h4 class="text-white fs-6 fw-bold">Current local date and time</h4>
+                                            <div>
+                                                Friday
+                                                27
+                                                October
+                                                2023
+                                                03:09
+                                                AM
+                                            </div>
+                                        </div>
+                                        <hr class="border-white">
+                                        <div>
+                                            <h4 class="text-white fs-6 fw-bold">Current conditions</h4>
+                                            <div class="d-flex justify-content-between gap-2 flex-wrap">
+                                                <div class="row flex-wrap">
+                                                    <div class="col">
+                                                        <img class="weather-icon" src="../public/images/cloudy.svg"
+                                                            alt="Overcast">
+                                                    </div>
+                                                    <div class="col">
+                                                        <div>Overcast</div>
+                                                        <div class="fs-1 fw-bold">13°</div>
+                                                    </div>
+                                                </div>
+                                                <div class="weather-grid">
+                                                    <div>
+                                                        <i class="fa-solid fa-temperature-three-quarters"></i>
+                                                        <span>12.9°</span>
+                                                    </div>
+                                                    <div>
+                                                        <i class="fa-solid fa-droplet"></i>
+                                                        <span>98%</span>
+                                                    </div>
+                                                    <div>
+                                                        <i class="fa-solid fa-wind"></i>
+                                                        <span>12.9 km/h</span>
+                                                    </div>
+                                                    <div>
+                                                        <i class="fa-solid fa-compass"></i>
+                                                        <span>SSW</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="d-flex gap-1 align-items-center">
+                                                            <span class="d-flex flex-column">
+                                                                <i class="fa-solid fa-chevron-up"></i>
+                                                                <i class="fa-solid fa-sun"></i>
+                                                            </span>
+                                                            <span>08:28</span>
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="d-flex gap-1 align-items-center">
+                                                            <span class="d-flex flex-column">
+                                                                <i class="fa-solid fa-chevron-down"></i>
+                                                                <i class="fa-solid fa-sun"></i>
+                                                            </span>
+                                                            <span>18:34</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <hr class="border-white">
                                     <div>
-                                        <h4 class="text-white fs-6 fw-bold">Current conditions</h4>
-                                        <div class="d-flex justify-content-between gap-2 flex-wrap">
-                                            <div class="row flex-wrap">
-                                                <div class="col">
-                                                    <img class="weather-icon" src="../public/images/cloudy.svg"
-                                                        alt="Overcast">
-                                                </div>
-                                                <div class="col">
-                                                    <div>Overcast</div>
-                                                    <div class="fs-1 fw-bold">13°</div>
-                                                </div>
-                                            </div>
-                                            <div class="weather-grid">
-                                                <div>
-                                                    <i class="fa-solid fa-temperature-three-quarters"></i>
-                                                    <span>12.9°</span>
-                                                </div>
-                                                <div>
-                                                    <i class="fa-solid fa-droplet"></i>
-                                                    <span>98%</span>
-                                                </div>
-                                                <div>
-                                                    <i class="fa-solid fa-wind"></i>
-                                                    <span>12.9 km/h</span>
-                                                </div>
-                                                <div>
-                                                    <i class="fa-solid fa-compass"></i>
-                                                    <span>SSW</span>
-                                                </div>
-                                                <div>
-                                                    <span class="d-flex gap-1 align-items-center">
-                                                        <span class="d-flex flex-column">
-                                                            <i class="fa-solid fa-chevron-up"></i>
-                                                            <i class="fa-solid fa-sun"></i>
-                                                        </span>
-                                                        <span>08:28</span>
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <span class="d-flex gap-1 align-items-center">
-                                                        <span class="d-flex flex-column">
-                                                            <i class="fa-solid fa-chevron-down"></i>
-                                                            <i class="fa-solid fa-sun"></i>
-                                                        </span>
-                                                        <span>18:34</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr class="border-white">
-                                <div>
-                                    <div>
-                                        <h4 class="text-white fs-6 fw-bold mb-3">Daily Forecast</h4>
-                                        <div class="weather-details-grid mb-2">
-                                            <div class="rounded-2 p-3 shadow border border-1 border-dark">
-                                                <div class="row flex-wrap">
-                                                    <div class="col mt-2">
-                                                        <h5 class="fs-6 fw-bold mb-0">Today</h5>
-                                                        <div class="mb-3"><small>10/27</small></div>
-                                                        <img class="weather-detail-icon"
-                                                            src="../public/images/rainy.svg"
-                                                            alt="Rain showers: Slight intensity">
-                                                        <div class="fw-bold mb-2">Rain showers: Slight intensity</div>
-                                                    </div>
-                                                    <div class="col mt-2">
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-temperature-three-quarters"></i>
-                                                            <span>14.3°</span>
+                                        <div>
+                                            <h4 class="text-white fs-6 fw-bold mb-3">Daily Forecast</h4>
+                                            <div class="weather-details-grid mb-2">
+                                                <div class="rounded-2 p-3 shadow border border-1 border-dark">
+                                                    <div class="row flex-wrap">
+                                                        <div class="col mt-2">
+                                                            <h5 class="fs-6 fw-bold mb-0">Today</h5>
+                                                            <div class="mb-3"><small>10/27</small></div>
+                                                            <img class="weather-detail-icon"
+                                                                src="../public/images/rainy.svg"
+                                                                alt="Rain showers: Slight intensity">
+                                                            <div class="fw-bold mb-2">Rain showers: Slight intensity</div>
                                                         </div>
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-wind"></i>
-                                                            <span>25.9 km/h</span>
-                                                        </div>
-                                                        <div>
-                                                            <i class="fa-solid fa-droplet"></i>
-                                                            <span>89%</span>
+                                                        <div class="col mt-2">
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-temperature-three-quarters"></i>
+                                                                <span>14.3°</span>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-wind"></i>
+                                                                <span>25.9 km/h</span>
+                                                            </div>
+                                                            <div>
+                                                                <i class="fa-solid fa-droplet"></i>
+                                                                <span>89%</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="rounded-2 p-3 shadow border border-1 border-dark">
-                                                <div class="row flex-wrap">
-                                                    <div class="col mt-2">
-                                                        <h5 class="fs-6 fw-bold mb-0">Tomorrow</h5>
-                                                        <div class="mb-3"><small>10/28</small></div>
-                                                        <img class="weather-detail-icon"
-                                                            src="../public/images/rainy.svg"
-                                                            alt="Rain: Slight intensity">
-                                                        <div class="fw-bold mb-2">Rain: Slight intensity</div>
-                                                    </div>
-                                                    <div class="col mt-2">
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-temperature-three-quarters"></i>
-                                                            <span>14°</span>
+                                                <div class="rounded-2 p-3 shadow border border-1 border-dark">
+                                                    <div class="row flex-wrap">
+                                                        <div class="col mt-2">
+                                                            <h5 class="fs-6 fw-bold mb-0">Tomorrow</h5>
+                                                            <div class="mb-3"><small>10/28</small></div>
+                                                            <img class="weather-detail-icon"
+                                                                src="../public/images/rainy.svg"
+                                                                alt="Rain: Slight intensity">
+                                                            <div class="fw-bold mb-2">Rain: Slight intensity</div>
                                                         </div>
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-wind"></i>
-                                                            <span>36.1 km/h</span>
-                                                        </div>
-                                                        <div>
-                                                            <i class="fa-solid fa-droplet"></i>
-                                                            <span>87%</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="rounded-2 p-3 shadow border border-1 border-dark">
-                                                <div class="row flex-wrap">
-                                                    <div class="col mt-2">
-                                                        <h5 class="fs-6 fw-bold mb-0">Sunday</h5>
-                                                        <div class="mb-3"><small>10/29</small></div>
-                                                        <img class="weather-detail-icon"
-                                                            src="../public/images/rainy.svg"
-                                                            alt="Rain showers: Slight intensity">
-                                                        <div class="fw-bold mb-2">Rain showers: Slight intensity</div>
-                                                    </div>
-                                                    <div class="col mt-2">
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-temperature-three-quarters"></i>
-                                                            <span>15.4°</span>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-wind"></i>
-                                                            <span>35.8 km/h</span>
-                                                        </div>
-                                                        <div>
-                                                            <i class="fa-solid fa-droplet"></i>
-                                                            <span>85%</span>
+                                                        <div class="col mt-2">
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-temperature-three-quarters"></i>
+                                                                <span>14°</span>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-wind"></i>
+                                                                <span>36.1 km/h</span>
+                                                            </div>
+                                                            <div>
+                                                                <i class="fa-solid fa-droplet"></i>
+                                                                <span>87%</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="rounded-2 p-3 shadow border border-1 border-dark">
-                                                <div class="row flex-wrap">
-                                                    <div class="col mt-2">
-                                                        <h5 class="fs-6 fw-bold mb-0">Monday</h5>
-                                                        <div class="mb-3"><small>10/30</small></div>
-                                                        <img class="weather-detail-icon"
-                                                            src="../public/images/rainy.svg"
-                                                            alt="Rain showers: Slight intensity">
-                                                        <div class="fw-bold mb-2">Rain showers: Slight intensity</div>
-                                                    </div>
-                                                    <div class="col mt-2">
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-temperature-three-quarters"></i>
-                                                            <span>13.3°</span>
+                                                <div class="rounded-2 p-3 shadow border border-1 border-dark">
+                                                    <div class="row flex-wrap">
+                                                        <div class="col mt-2">
+                                                            <h5 class="fs-6 fw-bold mb-0">Sunday</h5>
+                                                            <div class="mb-3"><small>10/29</small></div>
+                                                            <img class="weather-detail-icon"
+                                                                src="../public/images/rainy.svg"
+                                                                alt="Rain showers: Slight intensity">
+                                                            <div class="fw-bold mb-2">Rain showers: Slight intensity</div>
                                                         </div>
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-wind"></i>
-                                                            <span>21.1 km/h</span>
-                                                        </div>
-                                                        <div>
-                                                            <i class="fa-solid fa-droplet"></i>
-                                                            <span>88%</span>
+                                                        <div class="col mt-2">
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-temperature-three-quarters"></i>
+                                                                <span>15.4°</span>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-wind"></i>
+                                                                <span>35.8 km/h</span>
+                                                            </div>
+                                                            <div>
+                                                                <i class="fa-solid fa-droplet"></i>
+                                                                <span>85%</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="rounded-2 p-3 shadow border border-1 border-dark">
-                                                <div class="row flex-wrap">
-                                                    <div class="col mt-2">
-                                                        <h5 class="fs-6 fw-bold mb-0">Tuesday</h5>
-                                                        <div class="mb-3"><small>10/31</small></div>
-                                                        <img class="weather-detail-icon"
-                                                            src="../public/images/rainy.svg"
-                                                            alt="Rain showers: Slight intensity">
-                                                        <div class="fw-bold mb-2">Rain showers: Slight intensity</div>
-                                                    </div>
-                                                    <div class="col mt-2">
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-temperature-three-quarters"></i>
-                                                            <span>12.8°</span>
+                                                <div class="rounded-2 p-3 shadow border border-1 border-dark">
+                                                    <div class="row flex-wrap">
+                                                        <div class="col mt-2">
+                                                            <h5 class="fs-6 fw-bold mb-0">Monday</h5>
+                                                            <div class="mb-3"><small>10/30</small></div>
+                                                            <img class="weather-detail-icon"
+                                                                src="../public/images/rainy.svg"
+                                                                alt="Rain showers: Slight intensity">
+                                                            <div class="fw-bold mb-2">Rain showers: Slight intensity</div>
                                                         </div>
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-wind"></i>
-                                                            <span>25.6 km/h</span>
-                                                        </div>
-                                                        <div>
-                                                            <i class="fa-solid fa-droplet"></i>
-                                                            <span>91%</span>
+                                                        <div class="col mt-2">
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-temperature-three-quarters"></i>
+                                                                <span>13.3°</span>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-wind"></i>
+                                                                <span>21.1 km/h</span>
+                                                            </div>
+                                                            <div>
+                                                                <i class="fa-solid fa-droplet"></i>
+                                                                <span>88%</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="rounded-2 p-3 shadow border border-1 border-dark">
-                                                <div class="row flex-wrap">
-                                                    <div class="col mt-2">
-                                                        <h5 class="fs-6 fw-bold mb-0">Wednesday</h5>
-                                                        <div class="mb-3"><small>11/01</small></div>
-                                                        <img class="weather-detail-icon"
-                                                            src="../public/images/rainy.svg"
-                                                            alt="Rain: Slight intensity">
-                                                        <div class="fw-bold mb-2">Rain: Slight intensity</div>
-                                                    </div>
-                                                    <div class="col mt-2">
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-temperature-three-quarters"></i>
-                                                            <span>12.3°</span>
+                                                <div class="rounded-2 p-3 shadow border border-1 border-dark">
+                                                    <div class="row flex-wrap">
+                                                        <div class="col mt-2">
+                                                            <h5 class="fs-6 fw-bold mb-0">Tuesday</h5>
+                                                            <div class="mb-3"><small>10/31</small></div>
+                                                            <img class="weather-detail-icon"
+                                                                src="../public/images/rainy.svg"
+                                                                alt="Rain showers: Slight intensity">
+                                                            <div class="fw-bold mb-2">Rain showers: Slight intensity</div>
                                                         </div>
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-wind"></i>
-                                                            <span>27.2 km/h</span>
-                                                        </div>
-                                                        <div>
-                                                            <i class="fa-solid fa-droplet"></i>
-                                                            <span>90%</span>
+                                                        <div class="col mt-2">
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-temperature-three-quarters"></i>
+                                                                <span>12.8°</span>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-wind"></i>
+                                                                <span>25.6 km/h</span>
+                                                            </div>
+                                                            <div>
+                                                                <i class="fa-solid fa-droplet"></i>
+                                                                <span>91%</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="rounded-2 p-3 shadow border border-1 border-dark">
-                                                <div class="row flex-wrap">
-                                                    <div class="col mt-2">
-                                                        <h5 class="fs-6 fw-bold mb-0">Thursday</h5>
-                                                        <div class="mb-3"><small>11/02</small></div>
-                                                        <img class="weather-detail-icon"
-                                                            src="../public/images/rainy.svg"
-                                                            alt="Rain: Slight intensity">
-                                                        <div class="fw-bold mb-2">Rain: Slight intensity</div>
-                                                    </div>
-                                                    <div class="col mt-2">
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-temperature-three-quarters"></i>
-                                                            <span>13.7°</span>
+                                                <div class="rounded-2 p-3 shadow border border-1 border-dark">
+                                                    <div class="row flex-wrap">
+                                                        <div class="col mt-2">
+                                                            <h5 class="fs-6 fw-bold mb-0">Wednesday</h5>
+                                                            <div class="mb-3"><small>11/01</small></div>
+                                                            <img class="weather-detail-icon"
+                                                                src="../public/images/rainy.svg"
+                                                                alt="Rain: Slight intensity">
+                                                            <div class="fw-bold mb-2">Rain: Slight intensity</div>
                                                         </div>
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-wind"></i>
-                                                            <span>48.3 km/h</span>
-                                                        </div>
-                                                        <div>
-                                                            <i class="fa-solid fa-droplet"></i>
-                                                            <span>82%</span>
+                                                        <div class="col mt-2">
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-temperature-three-quarters"></i>
+                                                                <span>12.3°</span>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-wind"></i>
+                                                                <span>27.2 km/h</span>
+                                                            </div>
+                                                            <div>
+                                                                <i class="fa-solid fa-droplet"></i>
+                                                                <span>90%</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="rounded-2 p-3 shadow border border-1 border-dark">
-                                                <div class="row flex-wrap">
-                                                    <div class="col mt-2">
-                                                        <h5 class="fs-6 fw-bold mb-0">Friday</h5>
-                                                        <div class="mb-3"><small>11/03</small></div>
-                                                        <img class="weather-detail-icon"
-                                                            src="../public/images/rainy.svg"
-                                                            alt="Rain: Slight intensity">
-                                                        <div class="fw-bold mb-2">Rain: Slight intensity</div>
+                                                <div class="rounded-2 p-3 shadow border border-1 border-dark">
+                                                    <div class="row flex-wrap">
+                                                        <div class="col mt-2">
+                                                            <h5 class="fs-6 fw-bold mb-0">Thursday</h5>
+                                                            <div class="mb-3"><small>11/02</small></div>
+                                                            <img class="weather-detail-icon"
+                                                                src="../public/images/rainy.svg"
+                                                                alt="Rain: Slight intensity">
+                                                            <div class="fw-bold mb-2">Rain: Slight intensity</div>
+                                                        </div>
+                                                        <div class="col mt-2">
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-temperature-three-quarters"></i>
+                                                                <span>13.7°</span>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-wind"></i>
+                                                                <span>48.3 km/h</span>
+                                                            </div>
+                                                            <div>
+                                                                <i class="fa-solid fa-droplet"></i>
+                                                                <span>82%</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="col mt-2">
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-temperature-three-quarters"></i>
-                                                            <span>10.7°</span>
+                                                </div>
+
+                                                <div class="rounded-2 p-3 shadow border border-1 border-dark">
+                                                    <div class="row flex-wrap">
+                                                        <div class="col mt-2">
+                                                            <h5 class="fs-6 fw-bold mb-0">Friday</h5>
+                                                            <div class="mb-3"><small>11/03</small></div>
+                                                            <img class="weather-detail-icon"
+                                                                src="../public/images/rainy.svg"
+                                                                alt="Rain: Slight intensity">
+                                                            <div class="fw-bold mb-2">Rain: Slight intensity</div>
                                                         </div>
-                                                        <div class="mb-3">
-                                                            <i class="fa-solid fa-wind"></i>
-                                                            <span>49.2 km/h</span>
-                                                        </div>
-                                                        <div>
-                                                            <i class="fa-solid fa-droplet"></i>
-                                                            <span>76%</span>
+                                                        <div class="col mt-2">
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-temperature-three-quarters"></i>
+                                                                <span>10.7°</span>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <i class="fa-solid fa-wind"></i>
+                                                                <span>49.2 km/h</span>
+                                                            </div>
+                                                            <div>
+                                                                <i class="fa-solid fa-droplet"></i>
+                                                                <span>76%</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
