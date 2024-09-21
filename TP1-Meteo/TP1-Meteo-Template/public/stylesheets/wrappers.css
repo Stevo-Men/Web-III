@@ -1,0 +1,33 @@
+.wrapper-sm,
+.wrapper-md,
+.wrapper-lg,
+.wrapper-xl,
+.wrapper-xxl,
+.wrapper {
+    --padding: 1rem;
+
+    margin-inline: auto;
+    padding-inline: var(--padding);
+    max-width: var(--width);
+    display: block;
+}
+
+.wrapper-sm {
+    --width: 576px;
+}
+
+.wrapper-md {
+    --width: 768px;
+}
+
+.wrapper-lg {
+    --width: 992px;
+}
+
+.wrapper-xl {
+    --width: 1200px;
+}
+
+.wrapper-xxl {
+    --width: 1400px;
+}

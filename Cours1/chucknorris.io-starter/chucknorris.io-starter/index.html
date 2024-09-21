@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chuck Norris Facts</title>
+
+    <!-- Include Bootstrap CSS first (to make selectors easier to override) -->
+    <link rel="stylesheet" href="./public/stylesheets/vendor/bootstrap@5.3.3/bootstrap.min.css">
+    <link rel="stylesheet" href="./public/stylesheets/overrides/bootstrap.css">
+
+    <!-- Include our own CSS after 3rd party libraries (to make selectors have higher priorities) -->
+    <link rel="stylesheet" href="./public/stylesheets/styles.css">
+    <script type="module" src="./public/javascripts/app.js" defer></script>
+  </head>
+  <body>
+    <div class="wrapper container | p-3 d-flex flex-column align-items-center">
+        <header>
+            <a href="/">
+                <img id="site-logo" class="img-fluid" src="./public/images/chucknorris_logo.png" alt="Chuck Norris Facts">                
+            </a>
+            <div class="text-center p-3">
+                <em>
+                    Cet exemple est pour montrer l'utilisation du <strong>fetch</strong> pour accéder aux données à partir d'un URL
+                    et de faire un retour sur <strong>l'utilisation des modules</strong> en JavaScript.
+                </em>
+            </div>
+            <div class="mt-3 mb-4">
+                <input type="email" data-search-facts class="form-control" placeholder="Search for Facts">
+            </div>
+        </header>
+
+        <main>
+            <div class="facts" data-facts>
+                <div class="fact">
+                    <q>Chuck Norris is not dead yet because he knows Bruce Lee is waiting for him in the after life.</q>
+                </div>
+                <div class="fact">
+                    <q>A movie scene depicting Chuck Norris losing a fight with Bruce Lee was the product of history's most expensive visual effect. When adjusted for inflation, the effect cost more than the Gross National Product of Paraguay.</q>
+                </div>
+            </div>
+        </main>
+
+        <footer class="site-footer | py-5 text-center">
+            <small class="disclaimer">
+                Original site is Chucknorris.io. This is only used for educational purposes.
+            </small>
+        </footer>
+    </div>
+
+    <!-- Include Bootstrap JS at bottom of the page before closing body (non-module script) -->
+    <script src="./public/javascripts/vendor/bootstrap@5.3.3/bootstrap.bundle.js"></script>
+  </body>
+</html>

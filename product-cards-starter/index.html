@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Product Cards</title>
+        <link rel="stylesheet" href="./public/stylesheets/styles.css">
+        <script defer src="./public/javascripts/app.js"></script>
+    </head>
+    <body>
+        <!-- 
+            The UI code for this example was taken from CodePen: https://codepen.io/yasirali9/pen/GRbZmod
+         -->
+        <div class="cont">
+
+            <!-- Product #1 - Red Nike Shoes card -->
+            <div class="product-card" data-product-price="149.99">
+                <div class="product-card__image">
+                    <img src="./public/images/nike-red-shoes.jpg" alt="Red Nike Shoes">
+                </div>
+                <div class="product-card__info">
+                    <h2 class="product-card__title">Nike Air Max</h2>
+                    <p class="product-card__description">Experience ultimate comfort and style with these iconic Nike Air Max sneakers.</p>
+                    <div class="product-card__price-row">
+                        <span class="product-card__price">$149.99</span>
+                        <button class="product-card__btn">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product #2 - Red Pencils card -->
+            <div class="product-card">
+                <div class="product-card__image" data-product-price="74.99">
+                    <img src="./public/images/red-pencils.avif" alt="Red Pencils">
+                </div>
+                <div class="product-card__info">
+                    <h2 class="product-card__title">Red Pencils</h2>
+                    <p class="product-card__description">Experience ultimate comfort and style with these iconic pencils for taking notes.</p>
+                    <div class="product-card__price-row">
+                        <span class="product-card__price">$19.99</span>
+                        <button class="product-card__btn">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </body>
+</html>
