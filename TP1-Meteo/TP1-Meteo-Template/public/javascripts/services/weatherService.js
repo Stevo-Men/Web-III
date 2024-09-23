@@ -1,47 +1,33 @@
-export default class WeatherService {
+export async function fetchWeatherData(latitude, longitude) {
+    // Construct the API URL
+    const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&forecast_days=8&timezone=auto&daily=temperature_2m_max,temperature_2m_min,weathercode,sunrise,sunset,windspeed_10m_max,winddirection_10m_dominant,relative_humidity_2m_max,relative_humidity_2m_min`;
 
-    async searchWeather(query) {
-        const cacheKey = `searchWeather_${query}`;
-        const cachedItem = getItem(cacheKey);
-
-        if (cachedItem) { // Fix here: check for cached data, not cacheKey
-            return cachedItem;
-        }
-
-        const url = `https://geocoding-api.open-meteo.com/v1/search?query=${query}`;
-        console.log(`API`);
-
-        const response = await fetch(url);
+    try {
+        const response = await fetch(weatherApiUrl);
+        
+        // Check if the response is ok
         if (!response.ok) {
-            throw new Error("API Error");
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const json = await response.json();
-        setItem(cacheKey, json.result, 60_000); // Caching for 60 seconds
-        return json.result;
+        const data = await response.json();
+        console.log("Weather API Response:", data); // Log the API response
+
+        // Check if current weather data is available
+        if (!data.current_weather) {
+            throw new Error("Current weather data is not available.");
+        }
+
+        // Extract the current weather data
+        const { current_weather } = data;
+
+        // Optionally log or return specific properties
+        console.log("Current Weather:", current_weather);
+
+        return current_weather; // Return the current weather data
+
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        throw error; // Re-throw the error for further handling
     }
-}
-
-function setItem(key, value, ttl) {
-    const item = {
-        value, 
-        expiry: new Date().getTime() + ttl
-    };
-    localStorage.setItem(key, JSON.stringify(item));
-}
-
-function getItem(key) {
-    const itemAsString = localStorage.getItem(key);
-    if (!itemAsString) {
-        return null;
-    }
-
-    const item = JSON.parse(itemAsString);
-
-    if (item.expiry < new Date().getTime()) {
-        localStorage.removeItem(key);
-        return null;
-    }
-
-    return item.value;
 }

@@ -1,11 +1,16 @@
+import { fetchWeatherData } from "./services/WeatherService.js";
+import { headerCityLayout } from './templates/headerCityLayout.js';
+import { fetchWeeklyForecast } from "./services/ForecastService.js";
+import { getWeatherIcon, getWeatherIconPath } from "./helpers/weatherIcons.js";
+
 const searchInputField = document.querySelector("[data-search-city]");
 
-searchInputField.addEventListener("input", function() {
+searchInputField.addEventListener("input", function () {
     const query = searchInputField.value.trim();
-    
+
     if (query.length > 3) {
         const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}`;
-        
+
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -17,28 +22,50 @@ searchInputField.addEventListener("input", function() {
                 return response.json();
             })
             .then(data => {
+                const city = data.results?.[0]; // Get the first city from the results array
+                console.log(data.results);
 
-                const resultsContainer = document.querySelector("#resultsContainer"); 
-                resultsContainer.innerHTML = '';
+                if (!city) {
+                    console.error("No city found.");
+                    resultsContainer.innerHTML = "";
+                    return;
+                }
 
-                const cities = data.results.slice(0, 10);
-                cities.forEach(city => {
-                    const cityHTML = `
-                        <header class="accordion-header wrap-words">
-                            <button class="accordion-button collapsed" data-bs-toggle="collapse"
-                                data-bs-target="[data-collapse-2974198]">
-                                <div class="d-flex flex-column">
-                                    <h2 class="fs-5 fw-bold">
-                                        <i class="fa-solid fa-location-dot me-2 text-primary"></i>${city.name}
-                                    </h2>
-                                    <h3 class="fs-6 country">
-                                        ${city.country}
-                                    </h3>
-                                </div>
-                            </button>
-                        </header>
-                    `;
-                    resultsContainer.insertAdjacentHTML('beforeend', cityHTML);
+                // Define city variables based on API response
+                const cityId = city.id;
+                const cityName = city.name;
+                const countryName = city.country;
+                const timezone = city.timezone;
+                const elevation = city.elevation || 'N/A'; // Use 'N/A' if elevation is missing
+
+                // Fetch weather data for this city
+                fetchWeatherData(city.latitude, city.longitude)
+                .then(weatherData => {
+                    console.log("Weather Data:", weatherData); // Log the entire weatherData object
+
+                    const currentWeather = weatherData?.current_weather || {};
+                    
+                    const weatherCode = currentWeather?.weathercode || 'default';
+                    const weatherIcon = getWeatherIcon(weatherCode); // Get the icon path
+
+                    const dailyForecast = weatherData.daily;
+
+                    // Format the current date and time
+                    const formattedDate = new Date().toLocaleDateString();
+                    const formattedTime = new Date().toLocaleTimeString();
+
+
+                    // Create the city layout with all necessary data
+                    const cityLayout = headerCityLayout(cityId, cityName, countryName, timezone, elevation, formattedDate, formattedTime, weatherData, dailyForecast);
+                   
+                    
+                    const resultsContainer = document.querySelector("#resultsContainer");
+                    resultsContainer.innerHTML = "";
+                    
+                    resultsContainer.insertAdjacentHTML('beforeend', cityLayout);
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
                 });
             })
             .catch(error => {
