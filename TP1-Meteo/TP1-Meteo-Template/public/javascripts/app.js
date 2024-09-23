@@ -31,6 +31,11 @@ searchInputField.addEventListener("input", function () {
                     return;
                 }
 
+                const formatTime = (dateTimeString) => {
+                    const date = new Date(dateTimeString);
+                    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                }
+
                 // Define city variables based on API response
                 const cityId = city.id;
                 const cityName = city.name;
@@ -38,34 +43,51 @@ searchInputField.addEventListener("input", function () {
                 const timezone = city.timezone;
                 const elevation = city.elevation || 'N/A'; // Use 'N/A' if elevation is missing
 
-                // Fetch weather data for this city
-                fetchWeatherData(city.latitude, city.longitude)
+                // Fetch current weather data for this city
+                return fetchWeatherData(city.latitude, city.longitude) // Return the promise here
                 .then(weatherData => {
                     console.log("Weather Data:", weatherData); // Log the entire weatherData object
 
-                    const currentWeather = weatherData?.current_weather || {};
                     
-                    const weatherCode = currentWeather?.weathercode || 'default';
-                    const weatherIcon = getWeatherIcon(weatherCode); // Get the icon path
-
-                    const dailyForecast = weatherData.daily;
-
-                    // Format the current date and time
-                    const formattedDate = new Date().toLocaleDateString();
-                    const formattedTime = new Date().toLocaleTimeString();
-
-
-                    // Create the city layout with all necessary data
-                    const cityLayout = headerCityLayout(cityId, cityName, countryName, timezone, elevation, formattedDate, formattedTime, weatherData, dailyForecast);
-                   
                     
-                    const resultsContainer = document.querySelector("#resultsContainer");
-                    resultsContainer.innerHTML = "";
-                    
-                    resultsContainer.insertAdjacentHTML('beforeend', cityLayout);
-                })
-                .catch(error => {
-                    console.error('Error fetching weather data:', error);
+
+                    // Fetch the 8-day weather forecast
+                    return fetchWeeklyForecast(city.latitude, city.longitude).then(forecastData => {
+                        console.log("8-Day Forecast Data:", forecastData); // Log the forecast data
+
+                        
+
+                        const todayForecast = forecastData?.daily_units || {};
+                        const dailyForecast = forecastData?.daily || {};
+
+                        const currentWeather = {
+                            temperature: weatherData?.temperature || 'N/A',
+                            humidity: forecastData?.daily?.relative_humidity_2m_max?.[0] || 'N/A',
+                            windspeed: weatherData?.windspeed || 'N/A',
+                            winddirection: weatherData?.winddirection || 'N/A',
+                            sunrise: forecastData?.daily?.sunrise?.[0] ? formatTime(forecastData.daily.sunrise[0]) : 'N/A',
+                            sunset: forecastData?.daily?.sunset?.[0] ? formatTime(forecastData.daily.sunset[0]) : 'N/A',
+                            timezone: weatherData?.timezone || 'N/A',
+                            elevation: elevation || 'N/A',
+                            // description: getWeatherDescription(weatherCode),
+                            // icon: getWeatherIcon(weatherCode),
+                        };
+
+                        const weatherCode = currentWeather?.weathercode || 'default';
+                        const weatherIcon = getWeatherIcon(weatherCode); // Get the icon path
+
+                        // Format the current date and time
+                        const formattedDate = new Date().toLocaleDateString();
+                        const formattedTime = new Date().toLocaleTimeString();
+
+                        // Create the city layout with all necessary data
+                        const cityLayout = headerCityLayout(cityId, cityName, countryName, timezone, elevation, formattedDate, formattedTime, currentWeather, dailyForecast);
+
+                        const resultsContainer = document.querySelector("#resultsContainer");
+                        resultsContainer.innerHTML = "";
+
+                        resultsContainer.insertAdjacentHTML('beforeend', cityLayout);
+                    });
                 });
             })
             .catch(error => {
