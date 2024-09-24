@@ -1,4 +1,4 @@
-import { cacheWeatherData, cacheWeatherData } from "../helpers/cache";
+import {  cacheWeatherData } from "../helpers/cache.js";
 
 
 

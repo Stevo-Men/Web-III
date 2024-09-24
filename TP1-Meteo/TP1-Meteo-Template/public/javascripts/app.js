@@ -9,12 +9,25 @@ import { getGeocodingAPIUrl } from "./data/APIGetter.js";
 
 const searchInputField = document.querySelector("[data-search-city]");
 
-searchInputField.addEventListener("input", function () {
+function debounce(func, delay) {
+    let timeoutId;
+    return function (...args) {
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+searchInputField.addEventListener("input", debounce(function () {
     const query = searchInputField.value.trim();
+    const formatTime = (dateTimeString) => {
+        const date = new Date(dateTimeString);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
 
     if (query.length > 3) {
         const url = getGeocodingAPIUrl(query);
         showLoading(); 
+
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -26,84 +39,104 @@ searchInputField.addEventListener("input", function () {
                 return response.json();
             })
             .then(data => {
-                const city = data.results?.[0];
-                console.log(data.results);
+                const cities = data.results; 
+                console.log(cities);
 
-                if (!city) {
-                    showError('No City Found!')
+                if (!cities || cities.length === 0) {
+                    showError('No City Found!');
+                    const resultsContainer = document.querySelector("#resultsContainer");
                     resultsContainer.innerHTML = "";
+                    hideLoading();
                     return;
                 }
 
-                const formatTime = (dateTimeString) => {
-                    const date = new Date(dateTimeString);
-                    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                }
 
-                const cityId = city.id;
-                const cityName = city.name;
-                const countryName = city.country;
-                const timezone = city.timezone;
-                const elevation = city.elevation || 'N/A'; 
+                const resultsContainer = document.querySelector("#resultsContainer");
+                resultsContainer.innerHTML = ""; 
 
-  
-                return fetchWeatherData(city.latitude, city.longitude)
-                .then(weatherData => {
-                    console.log("Weather Data:", weatherData);
 
-                    
-                    
+                cities.forEach(city => {
+                    const cityId = city.id;
+                    const cityName = city.name;
+                    const countryName = city.country;
+                    const timezone = city.timezone;
+                    const elevation = city.elevation || 'N/A';
 
-                    return fetchWeeklyForecast(city.latitude, city.longitude).then(forecastData => {
-                        console.log("8-Day Forecast Data:", forecastData);
+                    console.log(`Fetching weather data for ${cityName} (Lat: ${city.latitude}, Lon: ${city.longitude})`);
 
-                        
 
-                       
-                        const dailyForecast = forecastData?.daily?.time?.map((date, index) => {
-                            const dailyWeatherCode = forecastData?.daily?.weathercode?.[index] || 'default';
-                            return {
-                                date: new Date(date).toLocaleDateString(),
-                                temperature: forecastData?.daily?.temperature_2m_max?.[index] || 'N/A',
-                                humidity: forecastData?.daily?.relative_humidity_2m_max?.[index] || 'N/A',
-                                windspeed:forecastData?.daily?.windspeed_10m_max?.[index] || 'N/A',
-                                description: getWeatherDescription(dailyWeatherCode),
-                                icon: getWeatherIcon(dailyWeatherCode),
-                            };
-                        }) || [];
-                        
+                    fetchWeatherData(city.latitude, city.longitude)
+                        .then(weatherData => {
+                            console.log(`Weather data for ${cityName}:`, weatherData);
 
-                        const currentWeather = {
-                            temperature: weatherData?.temperature || 'N/A',
-                            humidity: forecastData?.daily?.relative_humidity_2m_max?.[0] || 'N/A',
-                            windspeed: weatherData?.windspeed || 'N/A',
-                            winddirection: weatherData?.winddirection || 'N/A',
-                            sunrise: forecastData?.daily?.sunrise?.[0] ? formatTime(forecastData.daily.sunrise[0]) : 'N/A',
-                            sunset: forecastData?.daily?.sunset?.[0] ? formatTime(forecastData.daily.sunset[0]) : 'N/A',
-                            timezone: weatherData?.timezone || 'N/A',
-                            elevation: elevation || 'N/A',
-                           // description: getWeatherDescription(weatherCode),
-                           // icon: getWeatherIcon(weatherCode),
-                        };
+                            if (!weatherData || Object.keys(weatherData).length === 0) {
+                                throw new Error('Invalid or empty weather data');
+                            }
 
-                        const weatherCode = currentWeather?.weathercode || 'default';
-                        const weatherIcon = getWeatherIcon(weatherCode); 
+                            return fetchWeeklyForecast(city.latitude, city.longitude)
+                                .then(forecastData => {
+                                    console.log(`8-Day Forecast for ${cityName}:`, forecastData);
 
-                        const formattedDate = new Date().toLocaleDateString();
-                        const formattedTime = new Date().toLocaleTimeString();
+                                    if (!forecastData || Object.keys(forecastData).length === 0) {
+                                        throw new Error('Invalid or empty forecast data');
+                                    }
 
-                        const cityLayout = headerCityLayout(cityId, cityName, countryName, timezone, elevation, formattedDate, formattedTime, currentWeather, dailyForecast);
+                                    const dailyForecast = forecastData?.daily?.time?.map((date, index) => {
+                                        const dailyWeatherCode = forecastData?.daily?.weathercode?.[index] || 'default';
+                                        return {
+                                            date: new Date(date).toLocaleDateString(),
+                                            temperature: forecastData?.daily?.temperature_2m_max?.[index] || 'N/A',
+                                            humidity: forecastData?.daily?.relative_humidity_2m_max?.[index] || 'N/A',
+                                            windspeed: forecastData?.daily?.windspeed_10m_max?.[index] || 'N/A',
+                                            description: getWeatherDescription(dailyWeatherCode),
+                                            icon: getWeatherIcon(dailyWeatherCode),
+                                        };
+                                    }) || [];
 
-                        const resultsContainer = document.querySelector("#resultsContainer");
-                        resultsContainer.innerHTML = "";
+                                    const currentWeather = {
+                                        temperature: weatherData?.temperature || 'N/A',
+                                        humidity: forecastData?.daily?.relative_humidity_2m_max?.[0] || 'N/A',
+                                        windspeed: weatherData?.windspeed || 'N/A',
+                                        winddirection: weatherData?.winddirection || 'N/A',
+                                        sunrise: forecastData?.daily?.sunrise?.[0] ? formatTime(forecastData.daily.sunrise[0]) : 'N/A',
+                                        sunset: forecastData?.daily?.sunset?.[0] ? formatTime(forecastData.daily.sunset[0]) : 'N/A',
+                                        timezone: weatherData?.timezone || 'N/A',
+                                        elevation: elevation || 'N/A',
+                                    };
 
-                        resultsContainer.insertAdjacentHTML('beforeend', cityLayout);
-                        hideLoading();
-                    });
+                                    const formattedDate = new Date().toLocaleDateString();
+                                    const formattedTime = new Date().toLocaleTimeString();
+
+                                    const cityLayout = headerCityLayout(cityId, cityName, countryName, timezone, elevation, formattedDate, formattedTime, currentWeather, dailyForecast);
+
+                                    resultsContainer.insertAdjacentHTML('beforeend', cityLayout);
+                                    hideLoading();
+                                });
+                        })
+                        .catch(error => {
+                            showError(`Error fetching weather data for ${cityName}: ${error.message}`);
+                            hideLoading();
+                        });
                 });
             })
             .catch(error => {
-                showError('There was a problem with the fetch operation:', error);
+                showError('There was a problem with the geocoding fetch operation.');
+                hideLoading();
             });
     }
-});
+}, 300));  
+
+
+
+
+
+function updateUIWithWeatherData({ currentWeather, dailyForecast, cityId, cityName, countryName, timezone, elevation }) {
+    const formattedDate = new Date().toLocaleDateString();
+    const formattedTime = new Date().toLocaleTimeString();
+
+    const cityLayout = headerCityLayout(cityId, cityName, countryName, timezone, elevation, formattedDate, formattedTime, currentWeather, dailyForecast);
+
+    const resultsContainer = document.querySelector("#resultsContainer");
+    resultsContainer.innerHTML = ""; 
+    resultsContainer.insertAdjacentHTML('beforeend', cityLayout);
+}
