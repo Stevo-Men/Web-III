@@ -1,28 +1,8 @@
-const apiUrl = "https://geocoding-api.open-meteo.com/v1/search?name=Sorel&count=10&language=fr&format=json";
+import { cacheWeatherData, cacheWeatherData } from "../helpers/cache";
 
-const api = {
-  get: async () => {
-    try {
-      const response = await fetch(apiUrl, { method: 'GET' });
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      throw error;
-    }
-  }
-};
 
-async function main() {
-  try {
-    const data = await api.get();
-    console.log(data);
-  } catch (error) {
-    console.error('Error:', error);
-  }
+
+
+export function getGeocodingAPIUrl(query) {
+  return `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}`;
 }
-
-main();

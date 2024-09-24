@@ -15,7 +15,6 @@ export function headerCityLayout(cityId, cityName, countryName, timezone, elevat
 
             <div id="collapse-${cityId}" class="accordion-collapse collapse">
                 <div class="weather accordion-body text-center">
-                    <!-- Current date and time -->
                     <div class="mb-4">
                         <h4 class="text-white fs-6 fw-bold">Current local date and time</h4>
                         <div class="mt-2">
@@ -25,7 +24,6 @@ export function headerCityLayout(cityId, cityName, countryName, timezone, elevat
                     </div>
 
                     <hr class="border-white">
-                    <!-- Current weather conditions -->
                     <div class="mb-4">
                         <h4 class="text-white fs-6 fw-bold">Current conditions</h4>
                         <div class="d-flex justify-content-around align-items-center flex-wrap">

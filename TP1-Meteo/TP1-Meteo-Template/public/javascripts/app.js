@@ -5,6 +5,7 @@ import { getWeatherIcon, getWeatherIconPath } from "./helpers/weatherIcons.js";
 import { getWeatherDescription } from "./helpers/weatherCode.js";
 import { showError } from "./components/ErrorMessage.js";
 import { hideLoading,showLoading } from "./components/LoadingMessage.js";
+import { getGeocodingAPIUrl } from "./data/APIGetter.js";
 
 const searchInputField = document.querySelector("[data-search-city]");
 
@@ -12,7 +13,7 @@ searchInputField.addEventListener("input", function () {
     const query = searchInputField.value.trim();
 
     if (query.length > 3) {
-        const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}`;
+        const url = getGeocodingAPIUrl(query);
         showLoading(); 
         fetch(url)
             .then(response => {
@@ -25,7 +26,7 @@ searchInputField.addEventListener("input", function () {
                 return response.json();
             })
             .then(data => {
-                const city = data.results?.[0]; // Get the first city from the results array
+                const city = data.results?.[0];
                 console.log(data.results);
 
                 if (!city) {
@@ -39,24 +40,22 @@ searchInputField.addEventListener("input", function () {
                     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 }
 
-                // Define city variables based on API response
                 const cityId = city.id;
                 const cityName = city.name;
                 const countryName = city.country;
                 const timezone = city.timezone;
-                const elevation = city.elevation || 'N/A'; // Use 'N/A' if elevation is missing
+                const elevation = city.elevation || 'N/A'; 
 
-                // Fetch current weather data for this city
-                return fetchWeatherData(city.latitude, city.longitude) // Return the promise here
+  
+                return fetchWeatherData(city.latitude, city.longitude)
                 .then(weatherData => {
-                    console.log("Weather Data:", weatherData); // Log the entire weatherData object
+                    console.log("Weather Data:", weatherData);
 
                     
                     
 
-                    // Fetch the 8-day weather forecast
                     return fetchWeeklyForecast(city.latitude, city.longitude).then(forecastData => {
-                        console.log("8-Day Forecast Data:", forecastData); // Log the forecast data
+                        console.log("8-Day Forecast Data:", forecastData);
 
                         
 
@@ -88,7 +87,7 @@ searchInputField.addEventListener("input", function () {
                         };
 
                         const weatherCode = currentWeather?.weathercode || 'default';
-                        const weatherIcon = getWeatherIcon(weatherCode); // Get the icon path
+                        const weatherIcon = getWeatherIcon(weatherCode); 
 
                         const formattedDate = new Date().toLocaleDateString();
                         const formattedTime = new Date().toLocaleTimeString();
