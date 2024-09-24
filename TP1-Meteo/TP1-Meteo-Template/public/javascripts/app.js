@@ -3,19 +3,13 @@ import { headerCityLayout } from './templates/headerCityLayout.js';
 import { fetchWeeklyForecast } from "./services/ForecastService.js";
 import { getWeatherIcon, getWeatherIconPath } from "./helpers/weatherIcons.js";
 import { getWeatherDescription } from "./helpers/weatherCode.js";
-import { showError } from "./components/ErrorMessage.js";
-import { hideLoading,showLoading } from "./components/LoadingMessage.js";
+import { hideLoading,showLoading,showError } from "./components/StateMessage.js";
 import { getGeocodingAPIUrl } from "./data/APIGetter.js";
+import { debounce } from "./helpers/debounce.js";
 
 const searchInputField = document.querySelector("[data-search-city]");
 
-function debounce(func, delay) {
-    let timeoutId;
-    return function (...args) {
-        if (timeoutId) clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func.apply(this, args), delay);
-    };
-}
+
 
 searchInputField.addEventListener("input", debounce(function () {
     const query = searchInputField.value.trim();
