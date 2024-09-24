@@ -2,6 +2,9 @@ import { fetchWeatherData } from "./services/WeatherService.js";
 import { headerCityLayout } from './templates/headerCityLayout.js';
 import { fetchWeeklyForecast } from "./services/ForecastService.js";
 import { getWeatherIcon, getWeatherIconPath } from "./helpers/weatherIcons.js";
+import { getWeatherDescription } from "./helpers/weatherCode.js";
+import { showError } from "./components/ErrorMessage.js";
+import { hideLoading,showLoading } from "./components/LoadingMessage.js";
 
 const searchInputField = document.querySelector("[data-search-city]");
 
@@ -10,12 +13,12 @@ searchInputField.addEventListener("input", function () {
 
     if (query.length > 3) {
         const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}`;
-
+        showLoading(); 
         fetch(url)
             .then(response => {
                 if (!response.ok) {
                     return response.json().then(errorData => {
-                        console.error(`Error ${response.status}:`, errorData);
+                        showError(`Error ${response.status}:`, errorData);
                         throw new Error(`Network response was not ok: ${response.status}`);
                     });
                 }
@@ -26,7 +29,7 @@ searchInputField.addEventListener("input", function () {
                 console.log(data.results);
 
                 if (!city) {
-                    console.error("No city found.");
+                    showError('No City Found!')
                     resultsContainer.innerHTML = "";
                     return;
                 }
@@ -57,8 +60,19 @@ searchInputField.addEventListener("input", function () {
 
                         
 
-                        const todayForecast = forecastData?.daily_units || {};
-                        const dailyForecast = forecastData?.daily || {};
+                       
+                        const dailyForecast = forecastData?.daily?.time?.map((date, index) => {
+                            const dailyWeatherCode = forecastData?.daily?.weathercode?.[index] || 'default';
+                            return {
+                                date: new Date(date).toLocaleDateString(),
+                                temperature: forecastData?.daily?.temperature_2m_max?.[index] || 'N/A',
+                                humidity: forecastData?.daily?.relative_humidity_2m_max?.[index] || 'N/A',
+                                windspeed:forecastData?.daily?.windspeed_10m_max?.[index] || 'N/A',
+                                description: getWeatherDescription(dailyWeatherCode),
+                                icon: getWeatherIcon(dailyWeatherCode),
+                            };
+                        }) || [];
+                        
 
                         const currentWeather = {
                             temperature: weatherData?.temperature || 'N/A',
@@ -69,29 +83,28 @@ searchInputField.addEventListener("input", function () {
                             sunset: forecastData?.daily?.sunset?.[0] ? formatTime(forecastData.daily.sunset[0]) : 'N/A',
                             timezone: weatherData?.timezone || 'N/A',
                             elevation: elevation || 'N/A',
-                            // description: getWeatherDescription(weatherCode),
-                            // icon: getWeatherIcon(weatherCode),
+                           // description: getWeatherDescription(weatherCode),
+                           // icon: getWeatherIcon(weatherCode),
                         };
 
                         const weatherCode = currentWeather?.weathercode || 'default';
                         const weatherIcon = getWeatherIcon(weatherCode); // Get the icon path
 
-                        // Format the current date and time
                         const formattedDate = new Date().toLocaleDateString();
                         const formattedTime = new Date().toLocaleTimeString();
 
-                        // Create the city layout with all necessary data
                         const cityLayout = headerCityLayout(cityId, cityName, countryName, timezone, elevation, formattedDate, formattedTime, currentWeather, dailyForecast);
 
                         const resultsContainer = document.querySelector("#resultsContainer");
                         resultsContainer.innerHTML = "";
 
                         resultsContainer.insertAdjacentHTML('beforeend', cityLayout);
+                        hideLoading();
                     });
                 });
             })
             .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
+                showError('There was a problem with the fetch operation:', error);
             });
     }
 });

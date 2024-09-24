@@ -1,4 +1,4 @@
-export function headerCityLayout(cityId, cityName, countryName, timezone, elevation, formattedDate, formattedTime, currentWeather, todayForecast, dailyForecast) {
+export function headerCityLayout(cityId, cityName, countryName, timezone, elevation, formattedDate, formattedTime, currentWeather, dailyForecast) {
     return `
         <div class="accordion-item">
             <header class="accordion-header wrap-words">
@@ -69,26 +69,24 @@ export function headerCityLayout(cityId, cityName, countryName, timezone, elevat
                     <!-- Daily forecast -->
                     <div>
                         <h4 class="text-white fs-6 fw-bold mb-3">Daily Forecast</h4>
-                        <div class="weather-details-grid mb-2">
-                            ${dailyForecast.map(day => `
-                            <div class="rounded-2 p-3 shadow border border-1 border-dark mb-3 text-center">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="col text-center">
-                                    <h5 class="fs-6 fw-bold mb-2">${day.date}</h5>
-                                    <img class="weather-detail-icon img-fluid mx-auto mb-2" src="./public/images/${day.icon}" alt="${day.description}">
-                                    <div class="fw-bold">${day.description}</div>
-                                </div>
-                                <div class="col d-flex flex-column justify-content-between align-items-center">
-                                    <div class = "mb-2"><i class="fa-solid fa-temperature-three-quarters"></i> ${day.temperature}°</div>
-                                    <div class = "mb-2"><i class="fa-solid fa-wind"></i> ${day.windspeed} km/h</div>
-                                    <div><i class="fa-solid fa-droplet"></i> ${day.humidity}%</div>
-                                </div>
-                            </div>
-                    
+                            <div class="weather-details-grid mb-2">
+                                ${dailyForecast.map(day => `
+                                    <div class="rounded-2 p-3 shadow border border-1 border-dark mb-3 text-center">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="col text-center">
+                                                <h5 class="fs-6 fw-bold mb-2">${day.date}</h5>
+                                                <img class="weather-detail-icon img-fluid mx-auto mb-2" src="./public/images/${day.icon}" alt="${day.description}">
+                                                <div class="fw-bold">${day.description}</div>
+                                            </div>
+                                            <div class="col d-flex flex-column justify-content-between align-items-center">
+                                                <div class = "mb-2"><i class="fa-solid fa-temperature-three-quarters"></i> ${day.temperature}°</div>
+                                                <div class = "mb-2"><i class="fa-solid fa-wind"></i> ${day.windspeed} km/h</div>
+                                                <div><i class="fa-solid fa-droplet"></i> ${day.humidity}%</div>
+                                            </div>
+                                        </div>
                         
-                            
-                                </div>`).join('')}
-                        </div>
+                                    </div>`).join('')}
+                            </div>
                     </div>
                 </div>
             </div>
